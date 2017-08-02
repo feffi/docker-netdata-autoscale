@@ -1,5 +1,9 @@
 # docker-netdata-autoscale
-Auto scaling netdata ephemeral nodes for monitoring a cluster of docker hosts (preferable in rancher). For more detailed information see
+Auto scaling netdata ephemeral nodes for monitoring a cluster of docker hosts (preferable in rancher).
+
+![Example dashboard](netdata-dashboard.png)
+
+For more detailed information see
 * https://github.com/firehol/netdata/wiki
 * https://github.com/firehol/netdata/wiki/monitoring-ephemeral-nodes
 * http://rancher.com/
