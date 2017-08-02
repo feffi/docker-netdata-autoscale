@@ -1,0 +1,6 @@
+version: '2'
+services:
+  netdata-master:
+    start_on_create: true
+  netdata-slave:
+    start_on_create: true
