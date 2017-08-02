@@ -1,0 +1,46 @@
+version: '2'
+services:
+  netdata-master:
+    cap_add:
+    - SYS_PTRACE
+    image: titpetric/netdata:latest
+    environment:
+      NETDATA_PORT: '19999'
+      NETDATA_API_KEY_ENABLE_333919f2-2529-4453-879e-c2f5087c28f2: '1'
+    stdin_open: true
+    network_mode: host
+    volumes:
+    - /proc:/host/proc:ro
+    - /sys:/host/sys:ro
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    tty: true
+    ports:
+    - 19999:19999/tcp
+    labels:
+      io.rancher.scheduler.affinity:host_label: monitoring-master=true
+      io.rancher.container.dns: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.global: 'true'
+  netdata-slave:
+    cap_add:
+    - SYS_PTRACE
+    image: titpetric/netdata:latest
+    environment:
+      NETDATA_STREAM_DESTINATION: tcp:netdata-master:19999
+      NETDATA_STREAM_API_KEY: 333919f2-2529-4453-879e-c2f5087c28f2
+    stdin_open: true
+    network_mode: host
+    volumes:
+    - /proc:/host/proc:ro
+    - /sys:/host/sys:ro
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    tty: true
+    links:
+    - netdata-master:netdata-master
+    labels:
+      io.rancher.scheduler.affinity:host_label: monitoring-slave=true
+      io.rancher.container.dns: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.global: 'true'
